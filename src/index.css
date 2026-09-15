@@ -1,0 +1,51 @@
+:root {
+  color-scheme: light;
+
+  /* Materials palette (see PLAN.md section 7) */
+  --color-rosewood: #2e1f1b;
+  --color-nickel: #cfd3d8;
+  --color-studio: #f3f4f5;
+  --color-abalone: #2f8c86;
+  --color-amber: #d08a2e;
+  --color-oxblood: #a23b3b;
+
+  --color-bg: var(--color-studio);
+  --color-text: var(--color-rosewood);
+  --color-border: var(--color-nickel);
+  --color-correct: var(--color-abalone);
+  --color-target: var(--color-amber);
+  --color-wrong: var(--color-oxblood);
+
+  --font-ui: system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-ui);
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-amber);
+  outline-offset: 2px;
+}
