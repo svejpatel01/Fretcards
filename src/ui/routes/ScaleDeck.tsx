@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useRef, useState } from 'react'
+import { useCallback, useEffect, useReducer, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ACOUSTIC_GUITAR } from '../../core/instruments/acousticGuitar'
 import { fretWindowPositionSystem } from '../../core/fretboard/positions/fretWindow'
@@ -6,7 +6,10 @@ import { locationsForMidi, midiAt, type FretRange } from '../../core/fretboard/f
 import { pitchClassName } from '../../core/theory/pitch'
 import { computeGateDb } from '../../core/audio/noteTracker'
 import { describeMistake, type ScaleAttemptState } from '../../core/exercises/scaleDeck'
+import { MicSource } from '../../adapters/micSource'
 import { useAudioEngine } from '../hooks/useAudioEngine'
+import { useSettings } from '../settings/SettingsContext'
+import { isEditableElement } from '../isEditableElement'
 import { MicPermissionGate } from '../components/MicPermissionGate'
 import { LevelMeter } from '../components/LevelMeter'
 import { Fretboard, type FretboardMark, type FretboardMarkStatus } from '../components/Fretboard'
@@ -53,11 +56,23 @@ function computeMarks(
 
 export function ScaleDeck() {
   const navigate = useNavigate()
-  const engine = useAudioEngine()
-  const [preferFlats, setPreferFlats] = useState(false)
-  const [hideReadout, setHideReadout] = useState(false)
-  const [state, dispatch] = useReducer(reducer, DEFAULT_SCALE_DECK_OPTIONS, (options) =>
-    initScaleDeckState(ACOUSTIC_GUITAR, fretWindowPositionSystem, options),
+  const { settings, updateSettings } = useSettings()
+  const preferFlats = settings.preferFlats
+  const hideReadout = settings.hideLiveReadout
+  const createSource = useCallback(
+    () => new MicSource(settings.inputDeviceId),
+    [settings.inputDeviceId],
+  )
+  const engine = useAudioEngine(createSource, {
+    a4Hz: settings.a4Hz,
+    clarityThreshold: settings.clarityThreshold,
+    gateMarginDb: settings.gateMarginDb,
+  })
+  const [state, dispatch] = useReducer(reducer, DEFAULT_SCALE_DECK_OPTIONS, (defaults) =>
+    initScaleDeckState(ACOUSTIC_GUITAR, fretWindowPositionSystem, {
+      ...defaults,
+      stretch: settings.stretchPreference,
+    }),
   )
 
   const readingTimeRef = useRef(0)
@@ -74,6 +89,7 @@ export function ScaleDeck() {
 
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
+      if (isEditableElement(e.target)) return // let Space reach checkboxes, selects, buttons normally
       if (e.key === ' ') {
         e.preventDefault()
         if (status === 'finished' || status === 'failed') {
@@ -89,7 +105,13 @@ export function ScaleDeck() {
 
   const fretRange = computeFretRange(state.options.position)
   const marks = computeMarks(state.ascending, state.expected, state.session.attempt, fretRange)
-  const gateDb = engine.noiseFloorDb !== null ? computeGateDb(engine.noiseFloorDb) : undefined
+  const gateDb =
+    engine.noiseFloorDb !== null
+      ? computeGateDb(engine.noiseFloorDb, {
+          gateFloorDb: -50,
+          gateMarginDb: settings.gateMarginDb,
+        })
+      : undefined
   const positions = fretWindowPositionSystem.positions(ACOUSTIC_GUITAR)
   const lastMistake = state.session.attempt.mistakes.at(-1)
 
@@ -187,7 +209,7 @@ export function ScaleDeck() {
           <input
             type="checkbox"
             checked={preferFlats}
-            onChange={(e) => setPreferFlats(e.target.checked)}
+            onChange={(e) => updateSettings({ preferFlats: e.target.checked })}
           />
           Show flats
         </label>
@@ -195,7 +217,7 @@ export function ScaleDeck() {
           <input
             type="checkbox"
             checked={hideReadout}
-            onChange={(e) => setHideReadout(e.target.checked)}
+            onChange={(e) => updateSettings({ hideLiveReadout: e.target.checked })}
           />
           Hide live readout (harder)
         </label>

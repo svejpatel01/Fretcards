@@ -18,6 +18,12 @@ export class MicSource implements FrameSource {
   private onFrameCallback: ((frame: AudioFrame) => void) | null = null
   private rafId: number | null = null
   private startTime = 0
+  private readonly deviceId: string | null
+
+  /** `deviceId`: a specific input device (from Settings), or null/omitted for the system default. */
+  constructor(deviceId: string | null = null) {
+    this.deviceId = deviceId
+  }
 
   get sampleRate(): number {
     if (!this.audioContext) throw new Error('MicSource has not been started')
@@ -32,7 +38,12 @@ export class MicSource implements FrameSource {
     let mediaStream: MediaStream
     try {
       mediaStream = await navigator.mediaDevices.getUserMedia({
-        audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false },
+        audio: {
+          echoCancellation: false,
+          noiseSuppression: false,
+          autoGainControl: false,
+          ...(this.deviceId ? { deviceId: { exact: this.deviceId } } : {}),
+        },
       })
     } catch (error) {
       await audioContext.close()

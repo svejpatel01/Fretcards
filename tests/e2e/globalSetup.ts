@@ -22,11 +22,18 @@ export default function globalSetup(): void {
   writeWavFixture(SCALE_MISTAKE_FIXTURE_PATH, [{ midi: 41, durationSeconds: 1.5 }])
 }
 
-function writeWavFixture(filePath: string, notes: { midi: number; durationSeconds: number }[]): void {
+function writeWavFixture(
+  filePath: string,
+  notes: { midi: number; durationSeconds: number }[],
+): void {
   const sampleRate = 48000
   const lead = silence(sampleRate, 1.5)
   const tones = notes.map((note) =>
-    karplusStrongPluck(midiToHz(note.midi), { sampleRate, durationSeconds: note.durationSeconds, decay: 0.9995 }),
+    karplusStrongPluck(midiToHz(note.midi), {
+      sampleRate,
+      durationSeconds: note.durationSeconds,
+      decay: 0.9995,
+    }),
   )
   const wavBytes = encodeWav(concatBuffers(lead, ...tones), sampleRate)
 

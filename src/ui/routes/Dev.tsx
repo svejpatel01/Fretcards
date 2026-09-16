@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { DEFAULT_PITCH_DETECTOR_CONFIG } from '../../core/audio/pitchDetector'
 import { DEFAULT_TRACKER_CONFIG, computeGateDb, type NoteEvent } from '../../core/audio/noteTracker'
@@ -7,12 +7,12 @@ import type { FrameSource } from '../../adapters/frameSource'
 import { MicSource } from '../../adapters/micSource'
 import { FileSource } from '../../adapters/fileSource'
 import { useAudioEngine } from '../hooks/useAudioEngine'
+import { useSettings } from '../settings/SettingsContext'
 import { MicPermissionGate } from '../components/MicPermissionGate'
 import { LevelMeter } from '../components/LevelMeter'
+import { Waveform } from '../components/Waveform'
 import { RoutePlaceholder } from './RoutePlaceholder'
 import styles from './Dev.module.css'
-
-const WAVEFORM_COLOR = '#2f8c86' // --color-abalone
 
 export function Dev() {
   const [searchParams] = useSearchParams()
@@ -41,14 +41,14 @@ function DevTools() {
   )
   const [medianWindowSize, setMedianWindowSize] = useState(DEFAULT_TRACKER_CONFIG.medianWindowSize)
 
+  const { settings } = useSettings()
   const createSource = useCallback((): FrameSource => {
     if (mode === 'file' && file) return new FileSource(file)
-    return new MicSource()
-  }, [mode, file])
+    return new MicSource(settings.inputDeviceId)
+  }, [mode, file, settings.inputDeviceId])
 
   const engine = useAudioEngine(createSource)
   const { onNoteEvent, frameSamples } = engine
-  const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(
     () =>
@@ -57,26 +57,6 @@ function DevTools() {
       }),
     [onNoteEvent],
   )
-
-  useEffect(() => {
-    const canvas = canvasRef.current
-    const samples = frameSamples
-    if (!canvas || !samples) return
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-    ctx.beginPath()
-    for (let i = 0; i < samples.length; i++) {
-      const x = (i / samples.length) * canvas.width
-      const y = canvas.height / 2 - samples[i] * (canvas.height / 2)
-      if (i === 0) ctx.moveTo(x, y)
-      else ctx.lineTo(x, y)
-    }
-    ctx.strokeStyle = WAVEFORM_COLOR
-    ctx.lineWidth = 1
-    ctx.stroke()
-  }, [frameSamples])
 
   const gateDb =
     engine.noiseFloorDb !== null
@@ -118,7 +98,7 @@ function DevTools() {
         <div className={styles.panels}>
           <div>
             <h2>Waveform</h2>
-            <canvas ref={canvasRef} width={512} height={128} className={styles.waveform} />
+            <Waveform samples={frameSamples} />
 
             <h2>Reading</h2>
             <dl className={styles.readout}>

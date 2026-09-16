@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useRef, useState } from 'react'
+import { useCallback, useEffect, useReducer, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ACOUSTIC_GUITAR } from '../../core/instruments/acousticGuitar'
 import { hzToMidi, noteName, pitchClassName } from '../../core/theory/pitch'
@@ -8,8 +8,13 @@ import {
   describeNoteGrade,
   DEFAULT_NOTE_DECK_OPTIONS,
   type NoteCard,
+  type NoteDeckProgress,
 } from '../../core/exercises/noteDeck'
+import { MicSource } from '../../adapters/micSource'
+import { loadValue, saveValue } from '../../adapters/storage'
 import { useAudioEngine } from '../hooks/useAudioEngine'
+import { useSettings } from '../settings/SettingsContext'
+import { isEditableElement } from '../isEditableElement'
 import { MicPermissionGate } from '../components/MicPermissionGate'
 import { LevelMeter } from '../components/LevelMeter'
 import { Flashcard } from '../components/Flashcard'
@@ -18,6 +23,7 @@ import { createNoteDeckReducer, initNoteDeckState } from './noteDeckReducer'
 import styles from './NoteDeck.module.css'
 
 const STRING_NAMES = ['low E', 'A', 'D', 'G', 'B', 'high E']
+const PROGRESS_STORAGE_KEY = 'noteDeckProgress'
 const reducer = createNoteDeckReducer(ACOUSTIC_GUITAR)
 
 function cardLabel(card: NoteCard, preferFlats: boolean): string {
@@ -33,10 +39,26 @@ function revealText(card: NoteCard): string {
 
 export function NoteDeck() {
   const navigate = useNavigate()
-  const engine = useAudioEngine()
-  const [preferFlats, setPreferFlats] = useState(false)
-  const [hideReadout, setHideReadout] = useState(false)
-  const [state, dispatch] = useReducer(reducer, DEFAULT_NOTE_DECK_OPTIONS, initNoteDeckState)
+  const { settings, updateSettings } = useSettings()
+  const preferFlats = settings.preferFlats
+  const hideReadout = settings.hideLiveReadout
+  const createSource = useCallback(
+    () => new MicSource(settings.inputDeviceId),
+    [settings.inputDeviceId],
+  )
+  const engine = useAudioEngine(createSource, {
+    a4Hz: settings.a4Hz,
+    clarityThreshold: settings.clarityThreshold,
+    gateMarginDb: settings.gateMarginDb,
+  })
+  const [state, dispatch] = useReducer(reducer, DEFAULT_NOTE_DECK_OPTIONS, (options) => ({
+    ...initNoteDeckState(options),
+    progress: loadValue<NoteDeckProgress>(PROGRESS_STORAGE_KEY, {}),
+  }))
+
+  useEffect(() => {
+    saveValue(PROGRESS_STORAGE_KEY, state.progress)
+  }, [state.progress])
 
   const readingTimeRef = useRef(0)
   const { reading } = engine
@@ -60,6 +82,7 @@ export function NoteDeck() {
 
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
+      if (isEditableElement(e.target)) return // let Space/R reach checkboxes, selects, buttons normally
       if (e.key === ' ') {
         e.preventDefault()
         if (!result) return
@@ -78,10 +101,16 @@ export function NoteDeck() {
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [result, navigate])
 
-  const midiFloat = engine.reading?.hz != null ? hzToMidi(engine.reading.hz) : null
+  const midiFloat = engine.reading?.hz != null ? hzToMidi(engine.reading.hz, settings.a4Hz) : null
   const heardMidi = midiFloat !== null ? Math.round(midiFloat) : null
   const hearing = heardMidi !== null ? noteName(heardMidi, { preferFlats }) : null
-  const gateDb = engine.noiseFloorDb !== null ? computeGateDb(engine.noiseFloorDb) : undefined
+  const gateDb =
+    engine.noiseFloorDb !== null
+      ? computeGateDb(engine.noiseFloorDb, {
+          gateFloorDb: -50,
+          gateMarginDb: settings.gateMarginDb,
+        })
+      : undefined
 
   return (
     <section>
@@ -207,7 +236,7 @@ export function NoteDeck() {
           <input
             type="checkbox"
             checked={preferFlats}
-            onChange={(e) => setPreferFlats(e.target.checked)}
+            onChange={(e) => updateSettings({ preferFlats: e.target.checked })}
           />
           Show flats
         </label>
@@ -215,7 +244,7 @@ export function NoteDeck() {
           <input
             type="checkbox"
             checked={hideReadout}
-            onChange={(e) => setHideReadout(e.target.checked)}
+            onChange={(e) => updateSettings({ hideLiveReadout: e.target.checked })}
           />
           Hide live readout (harder)
         </label>

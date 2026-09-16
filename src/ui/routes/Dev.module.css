@@ -12,15 +12,6 @@
   margin-top: 1rem;
 }
 
-.waveform {
-  width: 100%;
-  max-width: 32rem;
-  height: 8rem;
-  background: var(--color-studio);
-  border: 1px solid var(--color-border);
-  border-radius: 0.25rem;
-}
-
 .readout {
   display: grid;
   grid-template-columns: auto 1fr;

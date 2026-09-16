@@ -367,12 +367,12 @@ Each phase: small commits; `npm run lint && npm run typecheck && npm test` green
 **Done when** tests pass and Svej plays G major 2nd position cleanly and with a mistake, and the app reports both correctly. Tests pass, including an e2e test that plants a wrong first note via a fake mic and confirms the app reports it correctly. **Still needed from Svej:** play G major 2nd position on a real guitar, cleanly and with a mistake, to confirm both report correctly; the real-scale-takes fixture eval needs the section 8 recordings, still outstanding.
 
 ### Phase 5: Product polish
-- [ ] Instrument select screen driven by the registry
-- [ ] Settings: A4 reference, input device, sensitivity, clarity threshold, stretch preference, sharps/flats, hide live readout
-- [ ] Progress persistence with a versioned storage schema
-- [ ] How it works page
-- [ ] Accessibility and mobile pass; design review against section 7
-- [ ] Optional: read-the-staff mode
+- [x] Instrument select screen driven by the registry
+- [x] Settings: A4 reference, input device, sensitivity, clarity threshold, stretch preference, sharps/flats, hide live readout
+- [x] Progress persistence with a versioned storage schema
+- [x] How it works page
+- [x] Accessibility and mobile pass; design review against section 7
+- [ ] Optional: read-the-staff mode — skipped for v1 (adds a new dependency, VexFlow, and a chunk of new UI; can come later without disturbing anything else)
 
 ### Phase 6: Ship on svej.org
 - [ ] Deploy (section 10)
@@ -450,3 +450,6 @@ If served under a subpath (`svej.org/fretcards`), set Vite's `base` and the rout
 | 2026-09-16 | `Fretboard` renders frets at uniform width rather than physically tapered spacing | Simpler, bug-resistant layout math; the plan doesn't require photorealism, just the rosewood/nickel/pearl "hero" aesthetic from section 7 |
 | 2026-09-16 | Scale grader's mistake classification (repick/skip/wrong-octave/wrong-note) is mode-independent; only whether a mistake ends the attempt differs between test and practice mode | Section 6.3's condition table reads as a single, universal classification, with test vs. practice differing only in what happens *after* a mistake is classified |
 | 2026-09-16 | Added a second Playwright project (`chromium-scale-mistake`) with its own `--use-file-for-fake-audio-capture` fixture, scoped via `testMatch`/`testIgnore` | Chromium's fake-audio-capture file is a launch-time flag fixed for the whole browser process, so testing two different planted signals (a clean tuner tone, a planted wrong scale note) needs two separately-launched browsers |
+| 2026-09-16 | Global settings (`src/core/settings.ts` + `SettingsContext`) hold A4 reference, clarity threshold, gate margin ("sensitivity"), stretch preference, sharps/flats, hide-live-readout, and input device; each deck/screen also keeps a quick-access toggle for sharps/flats and hide-readout that writes back to the same global state | Section 3/7's settings live in one place (Settings screen is the discoverable home) but are one click away while practicing, without duplicating state |
+| 2026-09-16 | Keyboard shortcuts (Space/R/Esc) in both decks bail out when the event target is an input/select/textarea/button | Without this, Space hijacked normal checkbox/select interaction (e.g. toggling "Auto-advance" or opening the "Fret range" dropdown) instead of letting the browser handle it — caught during the accessibility pass |
+| 2026-09-16 | `Waveform` extracted into a shared component (`src/ui/components/Waveform.tsx`), used by both the Dev page and the new How It Works page | Avoids duplicating the canvas-drawing effect; How It Works reuses the same live-demo pattern as Dev |

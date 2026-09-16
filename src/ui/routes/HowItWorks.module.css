@@ -1,0 +1,51 @@
+.pipeline {
+  max-width: 40rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-left: 1.25rem;
+}
+
+.demo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  max-width: 32rem;
+  margin-top: 1rem;
+}
+
+.demo button {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.25rem;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+}
+
+.readout {
+  display: flex;
+  gap: 1.5rem;
+  font-variant-numeric: tabular-nums;
+  margin: 0;
+}
+
+.readout dt {
+  display: inline;
+  color: var(--color-rosewood);
+  opacity: 0.7;
+}
+
+.readout dd {
+  display: inline;
+  margin: 0 0 0 0.35rem;
+}
+
+.note {
+  max-width: 40rem;
+  margin-top: 2rem;
+  font-size: 0.9rem;
+  color: var(--color-rosewood);
+  opacity: 0.85;
+}

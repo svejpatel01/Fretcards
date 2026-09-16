@@ -6,7 +6,12 @@ import {
   type PitchDetectorConfig,
   type PitchReading,
 } from '../../core/audio/pitchDetector'
-import { NoteTracker, type NoteEvent, type TrackerConfig } from '../../core/audio/noteTracker'
+import {
+  DEFAULT_TRACKER_CONFIG,
+  NoteTracker,
+  type NoteEvent,
+  type TrackerConfig,
+} from '../../core/audio/noteTracker'
 import { ACOUSTIC_GUITAR } from '../../core/instruments/acousticGuitar'
 import type { FrameSource } from '../../adapters/frameSource'
 import { MicSource } from '../../adapters/micSource'
@@ -17,6 +22,12 @@ const NOISE_FLOOR_STORAGE_KEY = 'noiseFloorDb'
 const WINDOW_SIZE = 2048
 
 export type AudioEngineStatus = 'idle' | 'requesting-permission' | 'calibrating' | 'ready' | 'error'
+
+export interface AudioEngineConfig {
+  a4Hz?: number
+  clarityThreshold?: number
+  gateMarginDb?: number
+}
 
 export interface UseAudioEngineResult {
   status: AudioEngineStatus
@@ -48,6 +59,7 @@ export interface UseAudioEngineResult {
  */
 export function useAudioEngine(
   createSource: () => FrameSource = () => new MicSource(),
+  config: AudioEngineConfig = {},
 ): UseAudioEngineResult {
   const [status, setStatus] = useState<AudioEngineStatus>('idle')
   const [error, setError] = useState<string | null>(null)
@@ -148,10 +160,14 @@ export function useAudioEngine(
 
     frameSourceRef.current = source
     detectorRef.current = new PitchDetector(WINDOW_SIZE, {
-      clarityThreshold: 0.9,
+      clarityThreshold: config.clarityThreshold ?? 0.9,
       detectorRange: ACOUSTIC_GUITAR.detectorRange,
     })
-    trackerRef.current = new NoteTracker()
+    trackerRef.current = new NoteTracker({
+      ...DEFAULT_TRACKER_CONFIG,
+      a4Hz: config.a4Hz ?? DEFAULT_TRACKER_CONFIG.a4Hz,
+      gateMarginDb: config.gateMarginDb ?? DEFAULT_TRACKER_CONFIG.gateMarginDb,
+    })
     source.setOnFrame(handleFrame)
 
     const storedNoiseFloor = loadValue<number | null>(NOISE_FLOOR_STORAGE_KEY, null)
@@ -165,7 +181,7 @@ export function useAudioEngine(
       setCalibrationProgress(0)
       setStatus('calibrating')
     }
-  }, [createSource, handleFrame])
+  }, [createSource, handleFrame, config])
 
   useEffect(() => stop, [stop])
 
