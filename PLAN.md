@@ -336,9 +336,9 @@ Each phase: small commits; `npm run lint && npm run typecheck && npm test` green
 **Done when** CI is green on the empty shell.
 
 ### Phase 1: Theory and fretboard core
-- [ ] `pitch.ts`, `scales.ts`, instrument types + acoustic guitar definition + registry
-- [ ] `fretboard.ts` and the `fretWindow` position system
-- [ ] Golden and property tests
+- [x] `pitch.ts`, `scales.ts`, instrument types + acoustic guitar definition + registry
+- [x] `fretboard.ts` and the `fretWindow` position system
+- [x] Golden and property tests
 
 **Done when** all tests pass for every key and position.
 
@@ -440,3 +440,5 @@ If served under a subpath (`svej.org/fretcards`), set Vite's `base` and the rout
 |---|---|---|
 | 2026-09-15 | Added `react-router-dom` as a runtime dependency | Client-side routing for the screens in section 7 (Instrument select, Deck select, Note finder, Scale positions, Tuner, Settings, How it works, Dev) |
 | 2026-09-15 | Pinned `vitest@5.0.1` (not the initially-resolved 3.2.7) | 3.2.7's bundled Vite type definitions don't match the installed `vite@8.3.0`, breaking `tsc -b`; 5.0.1 declares `vite@^8.0.0` support |
+| 2026-09-15 | `tests/**` type-checks under `moduleResolution: bundler` (changed from `nodenext`) | `nodenext` requires explicit `.js` extensions on relative imports, which fought with importing `src/core/**` directly from tests; nothing here is actually run through Node's native resolver (Vite/Vitest/Playwright all use their own loaders), so `bundler` is safe and matches `tsconfig.app.json` |
+| 2026-09-15 | ESLint's `src/core` globals live in a block separate from the general browser-globals block, with `ignores: ['src/core/**']` on the latter | Flat config *merges* `languageOptions.globals` across matching blocks instead of replacing it, so `globals.browser` was leaking `document`/`window` into `src/core` until the blocks were made mutually exclusive by file glob |
