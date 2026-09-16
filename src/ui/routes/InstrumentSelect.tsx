@@ -1,10 +1,18 @@
-import { RoutePlaceholder } from './RoutePlaceholder'
+import { Link } from 'react-router-dom'
+import styles from './InstrumentSelect.module.css'
 
 export function InstrumentSelect() {
   return (
-    <RoutePlaceholder
-      title="Choose an instrument"
-      description="Acoustic guitar (Phase 5 will drive this list from the instrument registry; other instruments listed as 'coming later')."
-    />
+    <section>
+      <h1>Choose an instrument</h1>
+      <ul className={styles.list}>
+        <li>
+          <Link to="/decks">Acoustic guitar</Link>
+        </li>
+        <li className={styles.comingLater}>Electric guitar (coming later)</li>
+        <li className={styles.comingLater}>Bass (coming later)</li>
+        <li className={styles.comingLater}>Ukulele (coming later)</li>
+      </ul>
+    </section>
   )
 }

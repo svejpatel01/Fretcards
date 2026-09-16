@@ -351,11 +351,11 @@ Each phase: small commits; `npm run lint && npm run typecheck && npm test` green
 **Done when** synthetic tests pass and Svej confirms the tuner reads all six open strings correctly on his guitar. Synthetic tests pass (1503 unit tests, plus a Playwright e2e test that drives the real getUserMedia path with a synthesized fake-mic WAV). **Still needed from Svej:** confirm the tuner reads all six open strings correctly on a real guitar (see the recording checklist below) — that's the one thing that can't be verified headlessly.
 
 ### Phase 3: Note finder deck
-- [ ] Card generation, grading modes (anywhere, on a string), progress weighting
-- [ ] Flashcard UI, feedback, reveal, deck options
-- [ ] E2E test with fake mic
+- [x] Card generation, grading modes (anywhere, on a string), progress weighting
+- [x] Flashcard UI, feedback, reveal, deck options
+- [x] E2E test with fake mic
 
-**Done when** grader and e2e tests pass and a 20-card manual session feels right.
+**Done when** grader and e2e tests pass and a 20-card manual session feels right. Grader and e2e tests pass. **Still needed from Svej:** a 20-card manual session on a real guitar to confirm it feels right.
 
 ### Phase 4: Scale positions deck
 - [ ] Confirm the position system with Svej

@@ -1,0 +1,44 @@
+.banner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 20rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border: 2px solid transparent;
+  animation: slide-in 150ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .banner {
+    animation: none;
+  }
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateY(-0.5rem);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.correct {
+  background: color-mix(in srgb, var(--color-abalone) 15%, var(--color-studio));
+  border-color: var(--color-abalone);
+  color: var(--color-abalone);
+}
+
+.wrong {
+  background: color-mix(in srgb, var(--color-oxblood) 12%, var(--color-studio));
+  border-color: var(--color-oxblood);
+  color: var(--color-oxblood);
+}
+
+.icon {
+  font-weight: 700;
+}

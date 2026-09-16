@@ -1,10 +1,18 @@
-import { RoutePlaceholder } from './RoutePlaceholder'
+import { Link } from 'react-router-dom'
+import styles from './DeckSelect.module.css'
 
 export function DeckSelect() {
   return (
-    <RoutePlaceholder
-      title="Choose a deck"
-      description="Note finder and major scale positions decks land here in Phase 3 and Phase 4."
-    />
+    <section>
+      <h1>Choose a deck</h1>
+      <ul className={styles.list}>
+        <li>
+          <Link to="/decks/note-finder">Note finder</Link>
+        </li>
+        <li>
+          <Link to="/decks/scale-positions">Major scale positions</Link>
+        </li>
+      </ul>
+    </section>
   )
 }

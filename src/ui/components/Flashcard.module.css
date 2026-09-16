@@ -1,0 +1,17 @@
+.card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 20rem;
+  aspect-ratio: 4 / 3;
+  background: var(--color-studio);
+  border: 2px solid var(--color-rosewood);
+  border-radius: 0.75rem;
+}
+
+.label {
+  font-size: 4.5rem;
+  font-weight: 700;
+  color: var(--color-rosewood);
+}
