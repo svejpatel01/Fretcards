@@ -16,10 +16,10 @@ const base = {
 export function GuitarIcon(props: IconProps) {
   return (
     <svg {...base} {...props}>
-      <path d="M17 4 H29" />
-      <path d="M23 4 V18" />
-      <path d="M23 18 C 37 18 39 30 34 38 C 29 45 17 45 12 38 C 7 30 9 18 23 18 Z" />
-      <circle className={styles.pop} cx="22" cy="30" r="3.6" fill="currentColor" stroke="none" />
+      <circle cx="20" cy="30" r="12" />
+      <path d="M28 22 L42 6" />
+      <path d="M37 6 H43 V12" />
+      <path className={styles.pop} stroke="currentColor" d="M14 25 H26 M13 30 H27 M14 35 H26" />
     </svg>
   )
 }
