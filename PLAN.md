@@ -375,11 +375,11 @@ Each phase: small commits; `npm run lint && npm run typecheck && npm test` green
 - [ ] Optional: read-the-staff mode — skipped for v1 (adds a new dependency, VexFlow, and a chunk of new UI; can come later without disturbing anything else)
 
 ### Phase 6: Ship on svej.org
-- [ ] Deploy (section 10)
-- [ ] Verify mic flow on desktop Chrome, desktop Safari, iOS Safari, Android Chrome
-- [ ] README with a demo GIF, architecture diagram, and accuracy table from the fixture eval
+- [~] Deploy (section 10) — target chosen (Cloudflare Pages) and confirmed with Svej; repo-side config done (`public/_redirects`, `public/_headers`); connecting the repo and custom domain in the Cloudflare dashboard needs Svej's own account access, which Claude Code doesn't have
+- [ ] Verify mic flow on desktop Chrome, desktop Safari, iOS Safari, Android Chrome — needs real devices and a live URL; can't be done headlessly
+- [x] README with an architecture diagram and a synthetic accuracy summary. Demo GIF and a real-guitar accuracy table (from the Phase 7 fixture eval) are still outstanding — a real playing session and real recordings are both things only Svej can provide
 
-**Done when** the app is live over HTTPS and works on all four browsers.
+**Done when** the app is live over HTTPS and works on all four browsers. **Still needed from Svej:** connect the repo in Cloudflare Pages and add the custom domain (README has the exact settings), then the cross-browser check once it's live.
 
 ### Phase 7: ML track (portfolio differentiator)
 
@@ -453,3 +453,4 @@ If served under a subpath (`svej.org/fretcards`), set Vite's `base` and the rout
 | 2026-09-16 | Global settings (`src/core/settings.ts` + `SettingsContext`) hold A4 reference, clarity threshold, gate margin ("sensitivity"), stretch preference, sharps/flats, hide-live-readout, and input device; each deck/screen also keeps a quick-access toggle for sharps/flats and hide-readout that writes back to the same global state | Section 3/7's settings live in one place (Settings screen is the discoverable home) but are one click away while practicing, without duplicating state |
 | 2026-09-16 | Keyboard shortcuts (Space/R/Esc) in both decks bail out when the event target is an input/select/textarea/button | Without this, Space hijacked normal checkbox/select interaction (e.g. toggling "Auto-advance" or opening the "Fret range" dropdown) instead of letting the browser handle it — caught during the accessibility pass |
 | 2026-09-16 | `Waveform` extracted into a shared component (`src/ui/components/Waveform.tsx`), used by both the Dev page and the new How It Works page | Avoids duplicating the canvas-drawing effect; How It Works reuses the same live-demo pattern as Dev |
+| 2026-09-16 | Chose Cloudflare Pages over the existing GCP VM (option A) for deployment, confirmed with Svej | Svej's DNS for svej.org is already on Cloudflare, so a Pages project + custom domain needs no new DNS provider and no risk to the existing GCP-VM-served svej.org/flights.svej.org; zero server maintenance vs. SSH/rsync/Caddy-config upkeep for option A |
