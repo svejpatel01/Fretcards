@@ -1,5 +1,5 @@
 import { defineConfig, devices } from '@playwright/test'
-import { TUNER_FIXTURE_PATH } from './tests/e2e/fixturePaths'
+import { SCALE_MISTAKE_FIXTURE_PATH, TUNER_FIXTURE_PATH } from './tests/e2e/fixturePaths'
 
 export default defineConfig({
   testDir: './tests/e2e',
@@ -20,6 +20,7 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
+      testIgnore: '**/scale-mistake-fake-mic.spec.ts',
       use: {
         ...devices['Desktop Chrome'],
         permissions: ['microphone'],
@@ -28,6 +29,23 @@ export default defineConfig({
             '--use-fake-ui-for-media-stream',
             '--use-fake-device-for-media-stream',
             `--use-file-for-fake-audio-capture=${TUNER_FIXTURE_PATH}`,
+          ],
+        },
+      },
+    },
+    {
+      // A separate project because Chromium's fake-audio-capture file is a
+      // launch-time flag, fixed for the whole browser process.
+      name: 'chromium-scale-mistake',
+      testMatch: '**/scale-mistake-fake-mic.spec.ts',
+      use: {
+        ...devices['Desktop Chrome'],
+        permissions: ['microphone'],
+        launchOptions: {
+          args: [
+            '--use-fake-ui-for-media-stream',
+            '--use-fake-device-for-media-stream',
+            `--use-file-for-fake-audio-capture=${SCALE_MISTAKE_FIXTURE_PATH}`,
           ],
         },
       },

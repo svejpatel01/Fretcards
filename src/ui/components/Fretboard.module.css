@@ -1,0 +1,58 @@
+.fretboard {
+  width: 100%;
+  max-width: 40rem;
+}
+
+.board {
+  fill: var(--color-rosewood);
+}
+
+.fretWire {
+  stroke: var(--color-nickel);
+  stroke-width: 2;
+}
+
+.nut {
+  stroke: var(--color-studio);
+  stroke-width: 5;
+}
+
+.string {
+  stroke: var(--color-nickel);
+}
+
+.inlay {
+  fill: var(--color-studio);
+  opacity: 0.5;
+}
+
+.dot {
+  stroke: var(--color-rosewood);
+  stroke-width: 1;
+  transition:
+    fill 100ms ease-out,
+    r 100ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dot {
+    transition: none;
+  }
+}
+
+.upcoming {
+  fill: var(--color-studio);
+  opacity: 0.55;
+}
+
+.current {
+  fill: var(--color-amber);
+}
+
+.correct {
+  fill: var(--color-abalone);
+}
+
+.wrong {
+  fill: var(--color-oxblood);
+}

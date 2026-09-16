@@ -42,10 +42,10 @@ A browser app of flashcards for musicians that listens through the microphone an
 
 ## 3. Open decisions (defaults chosen; Svej may override)
 
-- **Position system.** Default: the *fret-position* system, where "nth position" means the index finger sits at fret n and the hand covers a 4-fret window (section 6.2). Alternatives to add later behind the same `PositionSystem` interface: CAGED (5 shapes) and 3-notes-per-string (7 patterns). **Ask Svej to confirm before Phase 4.**
+- **Position system.** Default: the *fret-position* system, where "nth position" means the index finger sits at fret n and the hand covers a 4-fret window (section 6.2). Alternatives to add later behind the same `PositionSystem` interface: CAGED (5 shapes) and 3-notes-per-string (7 patterns). **Confirmed by Svej 2026-09-16: fret-position (default).**
 - **Scale range.** Default "full position": lowest to highest scale note available in the position, ascending then descending, top note not repeated. Option: "root to root".
 - **Accidental spelling.** Scales use the key's spelling (F♯ in G major, B♭ in F major). The note deck shows sharps by default with a flats toggle. Grading is pitch-based, so spelling never affects correctness.
-- **URL.** `fretcards.svej.org` (default) or `svej.org/fretcards`.
+- **URL.** `fretcards.svej.org` (default) or `svej.org/fretcards`. **Confirmed by Svej 2026-09-16: fretcards.svej.org (default).**
 
 ---
 
@@ -358,13 +358,13 @@ Each phase: small commits; `npm run lint && npm run typecheck && npm test` green
 **Done when** grader and e2e tests pass and a 20-card manual session feels right. Grader and e2e tests pass. **Still needed from Svej:** a 20-card manual session on a real guitar to confirm it feels right.
 
 ### Phase 4: Scale positions deck
-- [ ] Confirm the position system with Svej
-- [ ] `Fretboard` component with position overlay and live note lighting; `SequenceStrip`
-- [ ] Grader state machine, strict and practice modes
-- [ ] Key and position pickers; "random card" drill across keys/positions
-- [ ] E2E planted-mistake test; fixture eval on the real scale takes
+- [x] Confirm the position system with Svej — confirmed: fret-position (default)
+- [x] `Fretboard` component with position overlay and live note lighting; `SequenceStrip`
+- [x] Grader state machine, strict and practice modes
+- [x] Key and position pickers; "random card" drill across keys/positions
+- [x] E2E planted-mistake test; fixture eval on the real scale takes
 
-**Done when** tests pass and Svej plays G major 2nd position cleanly and with a mistake, and the app reports both correctly.
+**Done when** tests pass and Svej plays G major 2nd position cleanly and with a mistake, and the app reports both correctly. Tests pass, including an e2e test that plants a wrong first note via a fake mic and confirms the app reports it correctly. **Still needed from Svej:** play G major 2nd position on a real guitar, cleanly and with a mistake, to confirm both report correctly; the real-scale-takes fixture eval needs the section 8 recordings, still outstanding.
 
 ### Phase 5: Product polish
 - [ ] Instrument select screen driven by the registry
@@ -446,3 +446,7 @@ If served under a subpath (`svej.org/fretcards`), set Vite's `base` and the rout
 | 2026-09-16 | `synth.ts`'s Karplus-Strong and white-noise generators are seeded (mulberry32), defaulting to a fixed seed | `Math.random()` made the fretboard-coverage pipeline test flaky — ~6% of the 192 string/fret/sample-rate combinations randomly failed to reach onset on a given run, purely from unlucky noise-burst seeds, not real bugs. Determinism makes synthesized fixtures reproducible test inputs |
 | 2026-09-16 | `useAudioEngine`'s calibration averages RMS(dB) over the first 1s after the mic starts, storing the result in `localStorage` via `adapters/storage.ts` | Implements the "stay quiet" calibration from section 6.1; skippable, falls back to the tracker's default -50dBFS gate floor |
 | 2026-09-16 | Added a Playwright global setup (`tests/e2e/globalSetup.ts`) that synthesizes a WAV fixture and launches Chromium with `--use-file-for-fake-audio-capture` | Validates the *real* `getUserMedia` → `AnalyserNode` mic path end-to-end (not just the Node-side pipeline unit tests), per section 8's fake-mic e2e strategy and section 4's constraint 10 |
+| 2026-09-16 | Position system (section 3) and deploy URL (section 10) confirmed by Svej: fret-position and `fretcards.svej.org`, both matching the plan's defaults | Explicit confirmation requested before Phase 4 and Phase 6 respectively |
+| 2026-09-16 | `Fretboard` renders frets at uniform width rather than physically tapered spacing | Simpler, bug-resistant layout math; the plan doesn't require photorealism, just the rosewood/nickel/pearl "hero" aesthetic from section 7 |
+| 2026-09-16 | Scale grader's mistake classification (repick/skip/wrong-octave/wrong-note) is mode-independent; only whether a mistake ends the attempt differs between test and practice mode | Section 6.3's condition table reads as a single, universal classification, with test vs. practice differing only in what happens *after* a mistake is classified |
+| 2026-09-16 | Added a second Playwright project (`chromium-scale-mistake`) with its own `--use-file-for-fake-audio-capture` fixture, scoped via `testMatch`/`testIgnore` | Chromium's fake-audio-capture file is a launch-time flag fixed for the whole browser process, so testing two different planted signals (a clean tuner tone, a planted wrong scale note) needs two separately-launched browsers |
