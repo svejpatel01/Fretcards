@@ -1,5 +1,13 @@
 import { describe, expect, it } from 'vitest'
-import { centsOffset, hzToMidi, midiToHz, noteName, octaveOf, pitchClass, pitchClassName } from '../../../src/core/theory/pitch'
+import {
+  centsOffset,
+  hzToMidi,
+  midiToHz,
+  noteName,
+  octaveOf,
+  pitchClass,
+  pitchClassName,
+} from '../../../src/core/theory/pitch'
 
 describe('hzToMidi / midiToHz round trips', () => {
   it('recovers known tuning frequencies as integer MIDI notes', () => {

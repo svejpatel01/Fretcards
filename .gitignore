@@ -17,6 +17,9 @@ test-results
 blob-report
 tests/fixtures/synth
 
+# Local Claude Code settings (personal permissions, not project config)
+.claude/settings.local.json
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

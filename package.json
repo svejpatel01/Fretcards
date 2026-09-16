@@ -14,6 +14,7 @@
     "eval:fixtures": "echo 'eval:fixtures is implemented in Phase 7 (scripts/eval)' && exit 0"
   },
   "dependencies": {
+    "pitchy": "^4.1.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-router-dom": "^7.9.1"

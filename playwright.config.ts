@@ -1,7 +1,9 @@
 import { defineConfig, devices } from '@playwright/test'
+import { TUNER_FIXTURE_PATH } from './tests/e2e/fixturePaths'
 
 export default defineConfig({
   testDir: './tests/e2e',
+  globalSetup: './tests/e2e/globalSetup.ts',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
@@ -18,7 +20,17 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: {
+        ...devices['Desktop Chrome'],
+        permissions: ['microphone'],
+        launchOptions: {
+          args: [
+            '--use-fake-ui-for-media-stream',
+            '--use-fake-device-for-media-stream',
+            `--use-file-for-fake-audio-capture=${TUNER_FIXTURE_PATH}`,
+          ],
+        },
+      },
     },
   ],
 })

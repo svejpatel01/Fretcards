@@ -15,12 +15,23 @@ describe('fretWindowPositionSystem golden tests', () => {
   it('G major, position 2: 17 notes, no stretches', () => {
     const shape = majorScaleShape(ACOUSTIC_GUITAR, 7, 2)
     expect(names(shape)).toEqual([
-      'F♯2', 'G2', 'A2',
-      'B2', 'C3', 'D3',
-      'E3', 'F♯3', 'G3',
-      'A3', 'B3', 'C4',
-      'D4', 'E4',
-      'F♯4', 'G4', 'A4',
+      'F♯2',
+      'G2',
+      'A2',
+      'B2',
+      'C3',
+      'D3',
+      'E3',
+      'F♯3',
+      'G3',
+      'A3',
+      'B3',
+      'C4',
+      'D4',
+      'E4',
+      'F♯4',
+      'G4',
+      'A4',
     ])
     expect(shape).toHaveLength(17)
     expect(shape.some((loc) => loc.stretch)).toBe(false)
@@ -29,13 +40,22 @@ describe('fretWindowPositionSystem golden tests', () => {
   it('C major, position 2: 16 notes, F4 is a stretch on the B string by default', () => {
     const shape = majorScaleShape(ACOUSTIC_GUITAR, 0, 2)
     expect(names(shape)).toEqual([
-      'G2', 'A2',
-      'B2', 'C3', 'D3',
-      'E3', 'F3', 'G3',
-      'A3', 'B3', 'C4',
-      'D4', 'E4',
+      'G2',
+      'A2',
+      'B2',
+      'C3',
+      'D3',
+      'E3',
+      'F3',
+      'G3',
+      'A3',
+      'B3',
+      'C4',
+      'D4',
+      'E4',
       'F4',
-      'G4', 'A4',
+      'G4',
+      'A4',
     ])
     expect(shape).toHaveLength(16)
 

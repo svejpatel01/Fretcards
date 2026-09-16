@@ -34,8 +34,12 @@ describe('majorScaleSpelling', () => {
   })
 
   it('normalizes an out-of-range or negative key pitch class', () => {
-    expect(majorScaleSpelling(19).map((d) => d.name)).toEqual(majorScaleSpelling(7).map((d) => d.name))
-    expect(majorScaleSpelling(-5).map((d) => d.name)).toEqual(majorScaleSpelling(7).map((d) => d.name))
+    expect(majorScaleSpelling(19).map((d) => d.name)).toEqual(
+      majorScaleSpelling(7).map((d) => d.name),
+    )
+    expect(majorScaleSpelling(-5).map((d) => d.name)).toEqual(
+      majorScaleSpelling(7).map((d) => d.name),
+    )
   })
 })
 

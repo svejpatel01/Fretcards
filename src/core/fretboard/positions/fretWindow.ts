@@ -65,7 +65,11 @@ function stretchLocations(
   return locations
 }
 
-function trimToRootSpan(instrument: Instrument, locations: FretLocation[], keyPitchClass: Midi): FretLocation[] {
+function trimToRootSpan(
+  instrument: Instrument,
+  locations: FretLocation[],
+  keyPitchClass: Midi,
+): FretLocation[] {
   const rootPc = pitchClass(keyPitchClass)
   const rootIndices: number[] = []
   locations.forEach((location, i) => {
@@ -89,7 +93,9 @@ function majorScaleShape(
     ...stretchLocations(instrument, scalePitchClasses, position, stretch),
   ].sort((a, b) => midiAt(instrument, a) - midiAt(instrument, b))
 
-  return opts.range === 'rootToRoot' ? trimToRootSpan(instrument, locations, keyPitchClass) : locations
+  return opts.range === 'rootToRoot'
+    ? trimToRootSpan(instrument, locations, keyPitchClass)
+    : locations
 }
 
 export const fretWindowPositionSystem: PositionSystem = {

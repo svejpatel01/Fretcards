@@ -343,12 +343,12 @@ Each phase: small commits; `npm run lint && npm run typecheck && npm test` green
 **Done when** all tests pass for every key and position.
 
 ### Phase 2: Audio engine, Tuner, Dev page
-- [ ] `synth.ts`, `wav.ts`, `pitchDetector.ts`, `noteTracker.ts` with the synthesized test suite
-- [ ] `micSource.ts`, `fileSource.ts`, `useAudioEngine`, `MicPermissionGate`, noise calibration
-- [ ] Tuner screen, Dev page
-- [ ] Present the recording checklist to Svej
+- [x] `synth.ts`, `wav.ts`, `pitchDetector.ts`, `noteTracker.ts` with the synthesized test suite
+- [x] `micSource.ts`, `fileSource.ts`, `useAudioEngine`, `MicPermissionGate`, noise calibration
+- [x] Tuner screen, Dev page
+- [x] Present the recording checklist to Svej
 
-**Done when** synthetic tests pass and Svej confirms the tuner reads all six open strings correctly on his guitar.
+**Done when** synthetic tests pass and Svej confirms the tuner reads all six open strings correctly on his guitar. Synthetic tests pass (1503 unit tests, plus a Playwright e2e test that drives the real getUserMedia path with a synthesized fake-mic WAV). **Still needed from Svej:** confirm the tuner reads all six open strings correctly on a real guitar (see the recording checklist below) — that's the one thing that can't be verified headlessly.
 
 ### Phase 3: Note finder deck
 - [ ] Card generation, grading modes (anywhere, on a string), progress weighting
@@ -442,3 +442,7 @@ If served under a subpath (`svej.org/fretcards`), set Vite's `base` and the rout
 | 2026-09-15 | Pinned `vitest@5.0.1` (not the initially-resolved 3.2.7) | 3.2.7's bundled Vite type definitions don't match the installed `vite@8.3.0`, breaking `tsc -b`; 5.0.1 declares `vite@^8.0.0` support |
 | 2026-09-15 | `tests/**` type-checks under `moduleResolution: bundler` (changed from `nodenext`) | `nodenext` requires explicit `.js` extensions on relative imports, which fought with importing `src/core/**` directly from tests; nothing here is actually run through Node's native resolver (Vite/Vitest/Playwright all use their own loaders), so `bundler` is safe and matches `tsconfig.app.json` |
 | 2026-09-15 | ESLint's `src/core` globals live in a block separate from the general browser-globals block, with `ignores: ['src/core/**']` on the latter | Flat config *merges* `languageOptions.globals` across matching blocks instead of replacing it, so `globals.browser` was leaking `document`/`window` into `src/core` until the blocks were made mutually exclusive by file glob |
+| 2026-09-16 | Added `pitchy` as a runtime dependency | Per section 2 — the McLeod Pitch Method detector wrapped by `core/audio/pitchDetector.ts` |
+| 2026-09-16 | `synth.ts`'s Karplus-Strong and white-noise generators are seeded (mulberry32), defaulting to a fixed seed | `Math.random()` made the fretboard-coverage pipeline test flaky — ~6% of the 192 string/fret/sample-rate combinations randomly failed to reach onset on a given run, purely from unlucky noise-burst seeds, not real bugs. Determinism makes synthesized fixtures reproducible test inputs |
+| 2026-09-16 | `useAudioEngine`'s calibration averages RMS(dB) over the first 1s after the mic starts, storing the result in `localStorage` via `adapters/storage.ts` | Implements the "stay quiet" calibration from section 6.1; skippable, falls back to the tracker's default -50dBFS gate floor |
+| 2026-09-16 | Added a Playwright global setup (`tests/e2e/globalSetup.ts`) that synthesizes a WAV fixture and launches Chromium with `--use-file-for-fake-audio-capture` | Validates the *real* `getUserMedia` → `AnalyserNode` mic path end-to-end (not just the Node-side pipeline unit tests), per section 8's fake-mic e2e strategy and section 4's constraint 10 |

@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest'
 import { ACOUSTIC_GUITAR } from '../../../src/core/instruments/acousticGuitar'
-import { locationsForMidi, locationsForPitchClass, midiAt } from '../../../src/core/fretboard/fretboard'
+import {
+  locationsForMidi,
+  locationsForPitchClass,
+  midiAt,
+} from '../../../src/core/fretboard/fretboard'
 
 describe('midiAt', () => {
   it('adds the fret to the open-string MIDI note', () => {

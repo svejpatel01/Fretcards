@@ -12,7 +12,10 @@ export interface FretRange {
   max: number
 }
 
-export function midiAt(instrument: Instrument, location: Pick<FretLocation, 'string' | 'fret'>): Midi {
+export function midiAt(
+  instrument: Instrument,
+  location: Pick<FretLocation, 'string' | 'fret'>,
+): Midi {
   return instrument.strings[location.string] + location.fret
 }
 
