@@ -36,7 +36,7 @@ export function Tuner() {
 
   return (
     <section>
-      <h1>Tuner</h1>
+      <h1 className="mark">Tuner</h1>
       <p>
         Play a single open string and hold it. The needle shows how far off you are in cents; a
         string 50¢ flat will grade as the wrong note in the decks, so it&apos;s worth tuning up

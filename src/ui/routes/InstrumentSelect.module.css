@@ -1,12 +1,78 @@
-.list {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+.intro {
+  margin-top: 1rem;
+  max-width: 44ch;
   font-size: 1.1rem;
+  line-height: 1.44;
+  color: var(--color-muted);
 }
 
-.comingLater {
-  opacity: 0.5;
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 200px));
+  gap: 1.1rem;
+  margin-top: 1.25rem;
+}
+
+.tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.9rem;
+  aspect-ratio: 1;
+  padding: 1.15rem 1rem 1rem;
+}
+
+.no {
+  position: absolute;
+  top: 0;
+  left: -2px;
+  transform: translateY(-50%);
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--color-bg);
+  background: var(--color-text);
+  border: 2px solid var(--color-border);
+  padding: 0.14rem 0.45rem;
+}
+
+.ico {
+  display: block;
+  width: clamp(38px, 32%, 56px);
+  color: var(--color-text);
+}
+
+.ico svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.title {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.tag {
+  font-size: 0.78rem;
+  color: var(--color-muted);
+}
+
+@media (max-width: 560px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .tile {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1.1rem;
+    aspect-ratio: auto;
+    padding: 1.25rem 1.1rem;
+  }
+  .ico {
+    width: 42px;
+    flex: none;
+  }
 }

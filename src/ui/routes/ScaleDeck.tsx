@@ -117,7 +117,7 @@ export function ScaleDeck() {
 
   return (
     <section>
-      <h1>Major scale positions</h1>
+      <h1 className="mark">Major scale positions</h1>
       <p>Play the scale up and back down. Space = next attempt (once finished), Esc = back.</p>
 
       <fieldset className={styles.options}>

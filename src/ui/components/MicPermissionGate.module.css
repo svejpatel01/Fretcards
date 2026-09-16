@@ -5,26 +5,38 @@
   gap: 0.75rem;
   max-width: 32rem;
   padding: 1.5rem;
-  border: 1px solid var(--color-border);
-  border-radius: 0.5rem;
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  box-shadow: var(--shadow-sticker);
 }
 
 .progress {
   width: 100%;
   height: 0.5rem;
-  accent-color: var(--color-amber);
+  accent-color: var(--color-target);
 }
 
 .gate button {
-  padding: 0.5rem 1rem;
-  border: 1px solid var(--color-rosewood);
-  border-radius: 0.25rem;
-  background: var(--color-rosewood);
-  color: var(--color-studio);
+  font-family: var(--font-ui);
+  font-weight: 700;
+  padding: 0.55rem 1.1rem;
+  border: 2px solid var(--color-border);
+  box-shadow: 3px 3px 0 var(--ink);
+  background: var(--blue);
+  color: var(--card);
   cursor: pointer;
-  font: inherit;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease;
 }
 
 .gate button:hover {
-  opacity: 0.9;
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 var(--red);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gate button:hover {
+    transform: none;
+  }
 }

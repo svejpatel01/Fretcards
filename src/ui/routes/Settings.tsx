@@ -32,7 +32,7 @@ export function Settings() {
 
   return (
     <section>
-      <h1>Settings</h1>
+      <h1 className="mark">Settings</h1>
       <p>These apply across the tuner and both decks.</p>
 
       <div className={styles.grid}>

@@ -29,7 +29,7 @@ export function HowItWorks() {
 
   return (
     <section>
-      <h1>How it works</h1>
+      <h1 className="mark">How it works</h1>
       <p>
         Everything here runs in your browser. The microphone signal never leaves your device —
         there's no server, no upload, no account. Here's the pipeline that turns your playing into a

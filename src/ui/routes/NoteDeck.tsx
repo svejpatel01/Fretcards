@@ -114,7 +114,7 @@ export function NoteDeck() {
 
   return (
     <section>
-      <h1>Note finder</h1>
+      <h1 className="mark">Note finder</h1>
       <p>Play the note shown on the card. Space = next/retry, R = reveal, Esc = back.</p>
 
       <fieldset className={styles.options}>

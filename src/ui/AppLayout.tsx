@@ -7,6 +7,7 @@ export function AppLayout() {
 
   return (
     <div>
+      <div className="halftone" aria-hidden="true" />
       <header className={styles.header}>
         <Link to="/" className={styles.brand}>
           Fretcards

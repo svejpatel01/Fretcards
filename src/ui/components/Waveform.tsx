@@ -1,8 +1,6 @@
 import { useEffect, useRef } from 'react'
 import styles from './Waveform.module.css'
 
-const WAVEFORM_COLOR = '#2f8c86' // --color-abalone
-
 export interface WaveformProps {
   samples: Float32Array | null
   width?: number
@@ -26,8 +24,8 @@ export function Waveform({ samples, width = 512, height = 128 }: WaveformProps) 
       if (i === 0) ctx.moveTo(x, y)
       else ctx.lineTo(x, y)
     }
-    ctx.strokeStyle = WAVEFORM_COLOR
-    ctx.lineWidth = 1
+    ctx.strokeStyle = getComputedStyle(canvas).getPropertyValue('--blue').trim() || '#1b3fae'
+    ctx.lineWidth = 1.5
     ctx.stroke()
   }, [samples])
 

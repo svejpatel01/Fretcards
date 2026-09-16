@@ -1,6 +1,9 @@
 .fretboard {
+  display: block;
   width: 100%;
   max-width: 40rem;
+  border: 2px solid var(--color-border);
+  box-shadow: var(--shadow-sticker);
 }
 
 .board {

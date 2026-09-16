@@ -1,8 +1,9 @@
 .waveform {
+  display: block;
   width: 100%;
   max-width: 32rem;
   height: 8rem;
-  background: var(--color-studio);
-  border: 1px solid var(--color-border);
-  border-radius: 0.25rem;
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  box-shadow: var(--shadow-sticker);
 }

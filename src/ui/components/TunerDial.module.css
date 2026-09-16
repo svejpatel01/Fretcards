@@ -6,10 +6,11 @@
 }
 
 .noteName {
+  font-family: var(--font-display);
   font-size: 4rem;
   line-height: 1;
-  font-weight: 700;
-  color: var(--color-rosewood);
+  font-weight: 400;
+  color: var(--color-text);
 }
 
 .needleTrack {
@@ -23,7 +24,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  border: 2px solid var(--color-nickel);
+  border: 2px solid var(--color-border);
   border-bottom: none;
   border-radius: 12rem 12rem 0 0;
 }

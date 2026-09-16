@@ -8,10 +8,26 @@
 }
 
 .tuner button {
-  padding: 0.5rem 1rem;
-  border: 1px solid var(--color-border);
-  border-radius: 0.25rem;
-  background: transparent;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  padding: 0.55rem 1.1rem;
+  border: 2px solid var(--color-border);
+  box-shadow: 3px 3px 0 var(--ink);
+  background: var(--color-surface);
+  color: var(--color-text);
   cursor: pointer;
-  font: inherit;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease;
+}
+
+.tuner button:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 var(--blue);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tuner button:hover {
+    transform: none;
+  }
 }
