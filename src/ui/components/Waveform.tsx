@@ -24,7 +24,7 @@ export function Waveform({ samples, width = 512, height = 128 }: WaveformProps) 
       if (i === 0) ctx.moveTo(x, y)
       else ctx.lineTo(x, y)
     }
-    ctx.strokeStyle = getComputedStyle(canvas).getPropertyValue('--blue').trim() || '#1b3fae'
+    ctx.strokeStyle = getComputedStyle(canvas).getPropertyValue('--cyan').trim() || '#22e3ff'
     ctx.lineWidth = 1.5
     ctx.stroke()
   }, [samples])

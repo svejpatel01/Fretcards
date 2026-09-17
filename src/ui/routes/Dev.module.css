@@ -21,7 +21,7 @@
 }
 
 .readout dt {
-  color: var(--color-rosewood);
+  color: var(--color-text);
   opacity: 0.7;
 }
 
@@ -41,7 +41,7 @@
 
 .eventLog li {
   padding: 0.25rem 0;
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid rgba(244, 240, 230, 0.25);
 }
 
 .slider {

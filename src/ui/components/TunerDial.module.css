@@ -24,7 +24,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  border: 2px solid var(--color-border);
+  border: 2px solid rgba(244, 240, 230, 0.35);
   border-bottom: none;
   border-radius: 12rem 12rem 0 0;
 }
@@ -52,5 +52,5 @@
 
 .centsLabel {
   font-variant-numeric: tabular-nums;
-  color: var(--color-rosewood);
+  color: var(--color-text);
 }

@@ -39,10 +39,10 @@
   font-family: var(--font-ui);
   font-weight: 700;
   padding: 0.4rem 0.85rem;
-  border: 2px solid var(--color-border);
-  box-shadow: 3px 3px 0 var(--ink);
+  border: 3px solid var(--color-border);
+  box-shadow: 5px 5px 0 var(--cyan);
   background: var(--color-surface);
-  color: var(--color-text);
+  color: var(--color-on-surface);
   cursor: pointer;
   transition:
     transform 0.12s ease,
@@ -50,8 +50,8 @@
 }
 
 .inline button:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 5px 5px 0 var(--blue);
+  transform: translate(-3px, -3px);
+  box-shadow: 8px 8px 0 var(--cyan);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -67,7 +67,7 @@
 }
 
 fieldset.field {
-  border: 2px solid var(--color-border);
+  border: 2px solid rgba(244, 240, 230, 0.35);
   padding: 0.5rem 0.75rem;
 }
 

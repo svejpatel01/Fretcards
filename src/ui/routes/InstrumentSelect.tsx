@@ -14,24 +14,36 @@ export function InstrumentSelect() {
         Flashcards that listen through your mic and grade what you play.
       </p>
 
-      <h2 className="eyebrow">Instruments</h2>
+      <div className={styles.head}>
+        <h2>Instruments</h2>
+        <span className="eyebrow">Pick one to start</span>
+      </div>
+
       <nav className={styles.grid} aria-label="Instruments">
         {INSTRUMENTS.map((instrument, i) => (
-          <Link key={instrument.id} to="/decks" className={`tile ${styles.tile}`}>
-            <span className={styles.no}>{String(i + 1).padStart(3, '0')}</span>
-            <span className={styles.ico}>
-              <GuitarIcon />
-            </span>
-            <span className={styles.title}>{instrument.name}</span>
+          <Link
+            key={instrument.id}
+            to="/decks"
+            className={`tile ${styles.card} ${i % 2 ? styles.cardCyan : styles.cardPink}`}
+          >
+            <div className={styles.cardTop}>
+              <span className={styles.no}>
+                <GuitarIcon />
+                {String(i + 1).padStart(2, '0')}
+              </span>
+            </div>
+            <div className={styles.cardBody}>
+              <h3>{instrument.name}</h3>
+              <span className={styles.badge}>Ready to play</span>
+            </div>
+            <div className={styles.dots} aria-hidden="true" />
           </Link>
         ))}
         {COMING_LATER.map((name) => (
-          <div key={name} className={`tile tile--soon ${styles.tile}`}>
-            <span className={styles.ico}>
-              <ComingSoonIcon />
-            </span>
-            <span className={styles.title}>{name}</span>
-            <span className={styles.tag}>Coming later</span>
+          <div key={name} className={`tile tile--soon ${styles.soon}`}>
+            <ComingSoonIcon />
+            <span className={styles.soonTitle}>{name}</span>
+            <span className={styles.soonTag}>Coming later</span>
           </div>
         ))}
       </nav>

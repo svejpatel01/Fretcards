@@ -1,83 +1,65 @@
 :root {
-  color-scheme: light;
-
-  /* svej.org palette — retro-print / halftone comic style, shared across svej.org properties */
-  --paper: #f6f4ec;
-  --card: #fffdf5;
-  --ink: #151515;
-  --muted: #5c5b54;
-  --blue: #1b3fae;
-  --red: #e8332a;
-  --cyan: #1fa8b8;
-  --maize: #f6b21b;
-  --dot: rgba(246, 178, 27, 0.22);
-
-  --color-bg: var(--paper);
-  --color-surface: var(--card);
-  --color-text: var(--ink);
-  --color-muted: var(--muted);
-  --color-border: var(--ink);
-  --color-accent: var(--blue);
-  --color-correct: var(--cyan);
-  --color-target: var(--maize);
-  --color-wrong: var(--red);
-
-  /* Aliases for the original Phase 0 "materials" tokens — kept so every component
-     re-skins automatically; a handful of components override structure (radius,
-     shadow) directly where the comic-print look needs to show through more. */
-  --color-rosewood: var(--ink);
-  --color-nickel: color-mix(in srgb, var(--muted) 30%, var(--card));
-  --color-studio: var(--card);
-  --color-abalone: var(--cyan);
-  --color-amber: var(--maize);
-  --color-oxblood: var(--red);
-
-  --font-display: 'Anton', 'Familjen Grotesk', sans-serif;
-  --font-ui: 'Familjen Grotesk', 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif;
-
-  --shadow-sticker: 4px 4px 0 var(--ink);
-  --shadow-sticker-hover: 7px 7px 0 var(--blue);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    color-scheme: dark;
-    --paper: #12131a;
-    --card: #191b24;
-    --ink: #efeee7;
-    --muted: #9b9a91;
-    --blue: #8aa4f6;
-    --red: #ff6a5f;
-    --cyan: #54c7d4;
-    --maize: #f6b21b;
-    --dot: rgba(246, 178, 27, 0.12);
-  }
-}
-
-:root[data-theme='dark'] {
   color-scheme: dark;
-  --paper: #12131a;
-  --card: #191b24;
-  --ink: #efeee7;
-  --muted: #9b9a91;
-  --blue: #8aa4f6;
-  --red: #ff6a5f;
-  --cyan: #54c7d4;
-  --maize: #f6b21b;
-  --dot: rgba(246, 178, 27, 0.12);
+
+  /* svej.org palette — dark neon-comic style, current as of 2026-09-17 */
+  --ink: #0b0713;
+  --paper: #f4f0e6;
+  --dark: #08060c;
+  --yellow: #ffe248;
+  --cyan: #22e3ff;
+  --pink: #d92562;
+
+  --color-bg: var(--ink);
+  --color-surface: var(--paper);
+  --color-text: var(--paper);
+  --color-on-surface: var(--dark);
+  --color-muted: rgba(244, 240, 230, 0.6);
+  --color-border: var(--dark);
+  --color-accent: var(--cyan);
+  --color-correct: var(--cyan);
+  --color-target: var(--yellow);
+  --color-wrong: var(--pink);
+
+  /* Aliases for the original Phase 0 "materials" tokens — kept so every
+     component re-skins automatically without touching each color value. */
+  --color-rosewood: var(--dark);
+  --color-nickel: rgba(244, 240, 230, 0.35);
+  --color-studio: var(--paper);
+  --color-abalone: var(--cyan);
+  --color-amber: var(--yellow);
+  --color-oxblood: var(--pink);
+
+  --font-display: 'Anton', 'Archivo', sans-serif;
+  --font-ui: 'Archivo', 'Helvetica Neue', Helvetica, Arial, system-ui, sans-serif;
+  --font-mono: 'DM Mono', ui-monospace, monospace;
+
+  --shadow-sticker: 8px 8px 0 var(--pink);
+  --shadow-sticker-hover: 12px 12px 0 var(--cyan);
 }
 
-:root[data-theme='light'] {
-  color-scheme: light;
-  --paper: #f6f4ec;
-  --card: #fffdf5;
-  --ink: #151515;
-  --muted: #5c5b54;
-  --blue: #1b3fae;
-  --red: #e8332a;
-  --cyan: #1fa8b8;
-  --maize: #f6b21b;
-  --dot: rgba(246, 178, 27, 0.22);
+@keyframes chroma {
+  0%,
+  88%,
+  100% {
+    text-shadow:
+      4px 0 var(--pink),
+      -4px 0 var(--cyan);
+  }
+  90% {
+    text-shadow:
+      12px -3px var(--pink),
+      -10px 4px var(--cyan);
+  }
+  93% {
+    text-shadow:
+      -7px 2px var(--pink),
+      8px -1px var(--cyan);
+  }
+  96% {
+    text-shadow:
+      4px 0 var(--pink),
+      -4px 0 var(--cyan);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -114,12 +96,18 @@ h2,
 h3 {
   font-family: var(--font-display);
   font-weight: 400;
-  letter-spacing: 0.01em;
-  line-height: 1;
+  text-transform: uppercase;
+  line-height: 0.9;
+  letter-spacing: -0.005em;
+  color: #fff;
 }
 
 a {
-  color: var(--blue);
+  color: var(--cyan);
+}
+
+a:hover {
+  color: var(--yellow);
 }
 
 button,
@@ -131,85 +119,106 @@ textarea {
 }
 
 :focus-visible {
-  outline: 3px solid var(--blue);
+  outline: 3px solid var(--cyan);
   outline-offset: 3px;
 }
 
-/* Ben-Day dot field — pure CSS, painted once, no animation */
-.halftone {
+/* Two soft radial glows, fixed behind the content — replaces the old halftone field */
+.glow {
   position: fixed;
-  inset: 0 0 auto 0;
-  height: 62vh;
-  background-image: radial-gradient(var(--dot) 1.1px, transparent 1.6px);
-  background-size: 7px 7px;
-  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 28%, transparent 100%);
-  mask-image: linear-gradient(to bottom, #000 0%, #000 28%, transparent 100%);
+  border-radius: 50%;
   pointer-events: none;
   z-index: 0;
 }
 
-/* Skewed, out-of-register headline treatment (a la svej.org's "mark") */
+.glow--pink {
+  top: -260px;
+  left: -180px;
+  width: 720px;
+  height: 720px;
+  background: radial-gradient(circle, rgba(217, 37, 98, 0.32) 0%, rgba(217, 37, 98, 0) 65%);
+}
+
+.glow--cyan {
+  top: -140px;
+  right: -220px;
+  width: 680px;
+  height: 680px;
+  background: radial-gradient(circle, rgba(34, 227, 255, 0.26) 0%, rgba(34, 227, 255, 0) 65%);
+}
+
+/* Glitch/out-of-register headline treatment (svej.org's animated "chroma" effect) */
 .mark {
   display: inline-block;
   font-family: var(--font-display);
   font-weight: 400;
+  text-transform: uppercase;
   line-height: 0.9;
-  letter-spacing: 0.01em;
-  transform: skewX(-4deg);
-  text-shadow:
-    0.045em 0 0 var(--red),
-    -0.045em 0 0 var(--cyan);
+  letter-spacing: -0.005em;
+  color: #fff;
+  animation: chroma 7s steps(1, end) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mark {
+    animation: none;
+    text-shadow:
+      4px 0 var(--pink),
+      -4px 0 var(--cyan);
+  }
 }
 
 .eyebrow {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: 0.8rem;
-  letter-spacing: 0.18em;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--color-muted);
 }
 
-/* A "sticker" card: hard border, offset drop shadow, lifts on hover when interactive */
+/* A "sticker" card: dark border on paper, big offset drop shadow, lifts on hover */
 .tile {
   display: block;
-  background: var(--color-surface);
-  border: 2px solid var(--color-border);
+  background: var(--paper);
+  color: var(--dark);
+  border: 3px solid var(--dark);
   box-shadow: var(--shadow-sticker);
-  color: inherit;
   text-decoration: none;
+  color-scheme: light;
   transition:
-    transform 0.12s ease,
-    box-shadow 0.12s ease;
+    transform 0.14s ease,
+    box-shadow 0.14s ease;
 }
 
 a.tile:hover {
-  transform: translate(-3px, -3px);
-  box-shadow: var(--shadow-sticker-hover);
+  transform: translate(-4px, -4px);
+  color: var(--dark);
 }
 
 a.tile:focus-visible {
-  outline: 3px solid var(--blue);
+  outline: 3px solid var(--cyan);
   outline-offset: 3px;
 }
 
 .tile--soon {
+  background: transparent;
+  color: var(--color-muted);
   border-style: dashed;
   border-color: var(--color-muted);
-  background: transparent;
   box-shadow: none;
-  color: var(--color-muted);
 }
 
 .btn {
-  font-family: var(--font-ui);
-  font-weight: 700;
-  font-size: 0.95rem;
-  padding: 0.55rem 1.1rem;
-  background: var(--color-surface);
-  color: var(--color-text);
-  border: 2px solid var(--color-border);
-  box-shadow: 3px 3px 0 var(--ink);
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.7rem 1.1rem;
+  background: var(--yellow);
+  color: var(--dark);
+  border: 3px solid var(--dark);
+  box-shadow: 6px 6px 0 var(--pink);
   cursor: pointer;
   transition:
     transform 0.12s ease,
@@ -217,19 +226,13 @@ a.tile:focus-visible {
 }
 
 .btn:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 5px 5px 0 var(--blue);
+  transform: translate(-3px, -3px);
+  box-shadow: 9px 9px 0 var(--pink);
 }
 
 .btn:active {
   transform: translate(0, 0);
-  box-shadow: 1px 1px 0 var(--ink);
-}
-
-.btn-primary {
-  background: var(--blue);
-  color: var(--card);
-  border-color: var(--blue);
+  box-shadow: 2px 2px 0 var(--pink);
 }
 
 @media (prefers-reduced-motion: reduce) {

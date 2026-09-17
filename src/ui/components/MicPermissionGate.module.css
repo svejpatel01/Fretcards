@@ -6,8 +6,10 @@
   max-width: 32rem;
   padding: 1.5rem;
   background: var(--color-surface);
-  border: 2px solid var(--color-border);
+  color: var(--color-on-surface);
+  border: 3px solid var(--color-border);
   box-shadow: var(--shadow-sticker);
+  color-scheme: light;
 }
 
 .progress {
@@ -17,13 +19,16 @@
 }
 
 .gate button {
-  font-family: var(--font-ui);
-  font-weight: 700;
-  padding: 0.55rem 1.1rem;
-  border: 2px solid var(--color-border);
-  box-shadow: 3px 3px 0 var(--ink);
-  background: var(--blue);
-  color: var(--card);
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.7rem 1.1rem;
+  border: 3px solid var(--dark);
+  box-shadow: 5px 5px 0 var(--pink);
+  background: var(--yellow);
+  color: var(--dark);
   cursor: pointer;
   transition:
     transform 0.12s ease,
@@ -31,8 +36,8 @@
 }
 
 .gate button:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 5px 5px 0 var(--red);
+  transform: translate(-3px, -3px);
+  box-shadow: 8px 8px 0 var(--pink);
 }
 
 @media (prefers-reduced-motion: reduce) {

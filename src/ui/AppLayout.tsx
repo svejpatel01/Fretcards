@@ -7,7 +7,8 @@ export function AppLayout() {
 
   return (
     <div>
-      <div className="halftone" aria-hidden="true" />
+      <div className="glow glow--pink" aria-hidden="true" />
+      <div className="glow glow--cyan" aria-hidden="true" />
       <header className={styles.header}>
         <Link to="/" className={styles.brand}>
           Fretcards

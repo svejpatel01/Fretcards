@@ -6,7 +6,9 @@
   margin: 1rem 0;
   padding: 0.75rem 1rem;
   background: var(--color-surface);
-  border: 2px solid var(--color-border);
+  color: var(--color-on-surface);
+  border: 3px solid var(--color-border);
+  color-scheme: light;
 }
 
 .options label {
@@ -44,10 +46,10 @@
   font-family: var(--font-ui);
   font-weight: 700;
   padding: 0.55rem 1.1rem;
-  border: 2px solid var(--color-border);
-  box-shadow: 3px 3px 0 var(--ink);
+  border: 3px solid var(--color-border);
+  box-shadow: 5px 5px 0 var(--cyan);
   background: var(--color-surface);
-  color: var(--color-text);
+  color: var(--color-on-surface);
   cursor: pointer;
   transition:
     transform 0.12s ease,
@@ -55,8 +57,8 @@
 }
 
 .actions button:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 5px 5px 0 var(--blue);
+  transform: translate(-3px, -3px);
+  box-shadow: 8px 8px 0 var(--cyan);
 }
 
 @media (prefers-reduced-motion: reduce) {
